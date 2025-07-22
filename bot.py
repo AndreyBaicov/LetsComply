@@ -6,9 +6,15 @@ from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filte
 from whisper_service import transcribe_audio
 from gpt_service import translate_to_official_speech
 
+
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 app = ApplicationBuilder().token(TOKEN).build()
+
+
+if __name__ == "__main__":
+    print("Working...")
+    app.run_polling()
 
 
 async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
