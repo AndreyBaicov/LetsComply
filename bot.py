@@ -12,10 +12,6 @@ TOKEN = os.getenv("TELEGRAM_TOKEN")
 app = ApplicationBuilder().token(TOKEN).build()
 
 
-if __name__ == "__main__":
-    print("Working...")
-    app.run_polling()
-
 
 async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -25,6 +21,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 app.add_handler(CommandHandler("start", handle_start))
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("💬 Message received")
     try:
         if update.message.voice:
             voice = await update.message.voice.get_file()
@@ -34,6 +31,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             input_text = update.message.text
 
         reply = await translate_to_official_speech(input_text)
+        print(f"📝 Text input: {input_text}")
         await update.message.reply_text(reply)
 
     except Exception:
@@ -42,4 +40,5 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 app.add_handler(MessageHandler(filters.TEXT | filters.VOICE, handle_message))
 
 if __name__ == "__main__":
+    print("Working...")
     app.run_polling()
